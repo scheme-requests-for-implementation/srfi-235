@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>SRFI 235: Combinators</title>
+    <link href="/favicon.png" rel="icon" sizes="192x192" type="image/png">
+    <link rel="stylesheet" href="https://srfi.schemers.org/srfi.css" type="text/css">
+    <meta name="viewport" content="width=device-width, initial-scale=1"></head>
+  <body>
+    <h1><a href="https://srfi.schemers.org/"><img class="srfi-logo" src="https://srfi.schemers.org/srfi-logo.svg" alt="SRFI surfboard logo" /></a>235: Combinators</h1>
+
+<p>by John Cowan (text), Arvydas Silanskas (code)</p>
+
+<h2 id="status">Status</h2>
+
+<p style="color: red;">For editor's use only.  Please do not edit this section.</p>
+
+<p>??? the draft/final/withdrawn status of the SRFI, information on how
+to subscribe to its mailing list, and important dates in its history.
+The editor will add this section.</p>
+
+<h2 id="abstract">Abstract</h2>
+
+<p>??? abstract, preferably shorter than 200 words.  Please outline the
+need for, and design of, the proposal.</p>
+
+
+
+<h2 id="rationale">Rationale</h2>
+
+
+<p>This SRFI contains various procedures that accept and return procedures,
+as well as a few others, drawn from
+<a href="http://wiki.call-cc.org/eggref/4/combinators">an earlier version of Chicken</a>.
+Common Lisp has a few of them too, and more come from
+<a href="http://programmingpraxis.com/contents/standard-prelude/">the Standard Prelude from <em>Programming Praxis</em></a>.</p>
+<p>These procedures are documented in the style of
+<a href="https://srfi.schemers.org/srfi-219/srfi-219.html">SRFI 219</a>.
+Rather than showing only how the procedures themselves are invoked,
+it also shows how the returned procedures would be invoked.
+This is done in order to make the descriptions easier to understand.
+For example, if <code>complement</code> were documented in the standard style,
+the description would say &quot;Returns a procedure which, when applied to an argument,
+returns <code>#t</code> when <em>proc</em> would return <code>#f</code> when applied to the same argument,
+and <code>#f</code> otherwise&quot;, which is more convoluted and harder to understand.
+However, this is merely a documentation style;
+it would be pointless to actually invoke these procedures in this fashion.</p>
+<h2 id="issues">Issues</h3>
+<p><strong>TODO</strong>: add examples</p>
+<h2 id="specification">Specification</h2>
+<p><code>((constantly</code>&nbsp;<em>obj</em> ...<code>)</code> <em>arg</em> ...<code>)</code></p>
+<p>Returns the <em>objs</em> as its values, ignoring <em>args</em>.</p>
+<p><code>((complement</code>&nbsp;<em>proc</em><code>)</code> <em>obj</em><code>)</code></p>
+<p>Returns <code>#t</code> when <code>(</code>&nbsp;<em>proc obj</em><code>)</code> returns <code>#f</code>, and <code>#f</code> otherwise.</p>
+<p><code>((flip</code>&nbsp;<em>proc</em><code>) .</code> <em>objs</em><code>)</code></p>
+<p>Returns what <code>(apply</code>&nbsp;<em>proc</em> <code>(reverse</code>&nbsp;<em>objs</em> <code>)</code> returns.</p>
+<p><code>((swap</code>&nbsp;<em>proc</em><code>)</code> *obj₁ obj₂<code>)</code></p>
+<p>Returns <code>(</code>*proc obj₂ obj₁<code>)</code>.</p>
+<p><code>((on-left</code>&nbsp;<em>proc</em><code>)</code> <em>obj₁ obj₂</em><code>)</code></p>
+<p>Returns (<em>proc obj₁</em>).</p>
+<p><code>((on-right</code>&nbsp;<em>proc</em><code>)</code> <em>obj₁ obj₂</em><code>)</code></p>
+<p>Returns (<em>proc obj₂</em>).</p>
+<p><code>((conjoin</code>&nbsp;<em>predicate</em> ...<code>)</code> <em>arg</em> ...<code>)</code></p>
+<p>Returns <code>#t</code> if the <em>args</em> satisfy all the <em>predicates</em>, and <code>#f</code> otherwise.
+If a predicate is not satisfied, no more <em>predicates</em> are invoked.</p>
+<p><code>((disjoin</code>&nbsp;<em>predicate</em> ...<code>)</code> <em>arg</em> ...<code>)</code></p>
+<p>Returns <code>#t</code> if the <em>args</em> satisfy any of the <em>predicates</em>, and <code>#f</code> otherwise.
+If a predicate is satisfied, no other predicates are invoked.</p>
+<p><code>((for-each-of</code>&nbsp;<em>proc</em> ... <code>)</code> <em>arg</em> ...<code>)</code></p>
+<p>Applies each of the <em>procs</em> in turn to <em>args</em>,
+discarding the results and returning an unspecified value.</p>
+<p><code>((all-of)</code>&nbsp;<em>predicate</em><code>)</code> <em>list</em><code>)</code></p>
+<p>Applies <em>predicate</em> to each element of <em>list</em> in turn,
+and immediately returns <code>#f</code> if <em>predicate</em> is not satisfied by that element;
+otherwise returns the result of the last call to <em>predicate</em>.
+If <em>list</em> is empty, returns <code>#t</code>.</p>
+<p><code>((some-of</code>&nbsp;<em>predicate</em><code>)</code> <em>list</em><code>)</code></p>
+<p>Applies <em>predicate</em> to each element of <em>list</em> in turn,
+and if <em>predicate</em> is satisfied by that element,
+immediately returns the result of calling <em>predicate</em>;
+otherwise returns <code>#f</code>.  If <em>list</em> is empty, returns <code>#f</code>.</p>
+<p><code>((on</code>&nbsp;<em>reducer mapper</em><code>)</code> <em>obj</em> ...<code>)</code></p>
+<p>Applies <em>mapper</em> to each <em>obj</em> in any order
+and then applies <em>reducer</em> to all of the results.</p>
+<p><code>((left-section</code>&nbsp;<em>proc arg</em> ...<code>)</code> <em>obj</em> ...<code>)</code></p>
+<p>Applies <em>proc</em> to <em>args</em> concatenated with <em>objs</em>.</p>
+<p><code>((right-section</code>&nbsp;<em>proc arg</em> ...<code>)</code> <em>obj</em> ...<code>)</code></p>
+<p>Applies <em>proc</em> to <em>objs</em> concatenated with the value of <code>(reverse</code>&nbsp;<em>args</em><code>)</code>.</p>
+<p><code>((apply-chain</code>&nbsp;<em>proc</em> ...<code>)</code> *arg ...)`</p>
+<p>Applies the last <em>proc</em> to <em>args</em> returning zero or more values,
+then applies the previous <em>proc</em> to the values, returning more values,
+until the first proc has been invoked; its values are returned.
+For example, <code>(apply-chain car cdr)</code> returns a procedure that
+behaves like <code>cadr</code>.</p>
+<p><code>((arguments-drop</code> <em>proc n</em><code>)</code> <em>arg</em><code>)</code><br><code>((arguments-drop-right</code> <em>proc n</em><code>)</code> <em>arg</em><code>)</code><br><code>((arguments-take</code> <em>proc n</em><code>)</code> <em>arg</em><code>)</code><br><code>((arguments-take-right</code> <em>proc n</em><code>)</code> <em>arg</em><code>)</code></p>
+<p>[Apply <em>proc</em> to the <em>args</em> after taking/dropping <em>n</em> arguments
+from <em>args</em>.]</p>
+<p><code>((group-by</code>&nbsp;<em>key-proc</em> [=]<code>)</code> <em>list</em><code>)</code></p>
+<p>Takes the elements of <em>list</em> and applies <em>key-proc</em>
+to each of them to get their keys.  Elements
+whose keys are the same (in the sense of =,
+which defaults to <code>equal?</code>)
+are grouped into newly allocated lists, and a list of
+these lists is returned.  Within each list, the elements
+appear in the same order as they do in <em>list</em>; in addition,
+the first elements of each list also appear in the same
+order as they do in <em>list</em>.  If <em>list</em> is the empty list,
+it is returned.</p>
+<h2 id="syntax-like-procedures">Syntax-like procedures</h3>
+<p>These are Scheme procedures that correspond to basic syntax.
+As usual in Lisps, <em>thunk</em> means a procedure that does not require arguments.</p>
+<p><code>(begin-procedure</code>&nbsp;<em>thunk</em> ...<code>)</code></p>
+<p>Invokes <em>thunks</em> in order, and returns what the last thunk returns,
+or an unspecified value if there are no thunks.</p>
+<p><code>(if-procedure</code>&nbsp;<em>value then-thunk</em> <em>else-thunk</em><code>)</code></p>
+<p>If <em>value</em> is true, invokes <em>then-thunk</em> and returns what it returns.
+Otherwise, invokes <em>else-thunk</em> and returns what it returns.</p>
+<p><code>(when-procedure</code>&nbsp;<em>value thunk</em> ...<code>)</code><br><code>(unless-procedure</code>&nbsp;<em>value thunk</em> ...<code>)</code></p>
+<p>If <em>value</em> is false/true, immediately returns.
+Otherwise, invokes each <em>thunk</em> in turn and then returns.
+n all cases an unspecified value is returned.</p>
+<p><code>(value-procedure</code>&nbsp;<em>value then-proc else-thunk</em><code>)</code></p>
+<p>If <em>value</em> is true, invokes <em>then-proc</em> on it
+and returns what <em>then-proc</em> returns.
+Otherwise, invokes <em>else-thunk</em> and returns what it returns.</p>
+<p><code>(case-procedure</code>&nbsp;<em>value thunk-alist</em> <em>else-thunk</em><code>)</code></p>
+<p>Searches <em>thunk-alist</em> for <em>value</em> (as if by <code>assv</code>).
+If there is a matching entry in <em>thunk-alist</em>,
+its cdr is invoked as a thunk, and <code>case-procedure</code> returns what the thunk returns.
+If there is no such entry in <em>thunk-alist</em>,
+invokes <em>else-thunk</em> and returns what it returns.</p>
+<p><code>(lazy-and-procedure</code>&nbsp;<em>thunk</em> ...<code>)</code></p>
+<p>The thunks are invoked from left
+to right, and if any thunk returns false, 
+then <code>#f</code> is returned.
+Any remaining thunks are not invoked.
+If all the thunks return true
+values, the values of the last thunk are returned. If
+there are no thunks, then <code>#t</code> is returned.</p>
+<p><code>(eager-and-procedure</code>&nbsp;<em>thunk</em> ...<code>)</code></p>
+<p>All the thunks are invoked from left
+to right.  If any thunk returns false, 
+then <code>#f</code> is returned. If all the thunks return true
+values, the value of the last thunk are returned. If
+there are no thunks, then <code>#t</code> is returned.</p>
+<p><code>(lazy-or-procedure</code>&nbsp;<em>thunk</em> ...<code>)</code></p>
+<p>The thunks are invoked from left
+to right, and the first true value is returned.
+Any remaining thunks are not invoked.
+If all thunks return
+<code>#f</code> or if there are no thunks, then <code>#f</code> is returned.</p>
+<p><code>(eager-or-procedure</code>&nbsp;<em>thunk</em> ...<code>)</code></p>
+<p>All the thunks are invoked from left
+to right, and then the first true value is returned.
+If all thunks return
+<code>#f</code> or if there are no thunks, then <code>#f</code> is returned.</p>
+<p><code>(loop-procedure</code>&nbsp;<em>thunk</em><code>)</code></p>
+<p>Invokes <em>thunk</em> repeatedly.  Does not return unless via <code>call/cc</code>.</p>
+<p><code>(while-procedure</code>&nbsp;<em>thunk</em><code>)</code></p>
+<p>Invokes <em>thunk</em> repeatedly until it returns false.
+Returns an unspecified value.</p>
+<p><code>(until-procedure</code>&nbsp;<em>thunk</em><code>)</code></p>
+<p>Invokes <em>thunk</em> repeatedly until it returns true.
+Returns an unspecified value.</p>
+<h2 id="other-procedures">Other procedures</h3>
+<p><code>(always</code>&nbsp;<em>obj</em> ...<code>)</code></p>
+<p>Ignores its arguments and always returns <code>#t</code>.</p>
+<p><code>(never</code>&nbsp;<em>obj</em> ...<code>)</code></p>
+<p>Ignores its arguments and always returns <code>#f</code>.</p>
+<p><code>(boolean</code>&nbsp;<em>obj</em><code>)</code></p>
+<p>If <em>obj</em> is true, returns <code>#t</code>; otherwise returns <code>#f</code>.</p>
+<p><code>(identity</code>&nbsp;<em>obj</em><code>)</code></p>
+<p>Returns <em>obj</em>; normally passed to a higher-order procedure rather than being invoked directly.
+Equivalent to <code>values</code> with a single argument but with a clearer name.</p>
+
+
+<h2 id="implementation">Implementation</h2>
+
+<p>The sample implementation is in the SRFI 235 repository.</p>
+<h2 id="acknowledgements">Acknowledgements</h2>
+
+<p>Thanks to the members of the SRFI-235 mailing list.</p>
+
+<h2 id="copyright">Copyright</h2>
+<p>&copy; 2022 John Cowan, Arvydas Silanskas.</p>
+
+<p>
+  Permission is hereby granted, free of charge, to any person
+  obtaining a copy of this software and associated documentation files
+  (the "Software"), to deal in the Software without restriction,
+  including without limitation the rights to use, copy, modify, merge,
+  publish, distribute, sublicense, and/or sell copies of the Software,
+  and to permit persons to whom the Software is furnished to do so,
+  subject to the following conditions:</p>
+
+<p>
+  The above copyright notice and this permission notice (including the
+  next paragraph) shall be included in all copies or substantial
+  portions of the Software.</p>
+<p>
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+  EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+  MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+  NONINFRINGEMENT.  IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
+  BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+  ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  SOFTWARE.</p>
+
+  <hr>
+  <address>Editor: <a href="mailto:srfi-editors+at+srfi+dot+schemers+dot+org">Arthur A. Gleckler</a></address></body></html>

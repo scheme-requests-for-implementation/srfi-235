@@ -131,7 +131,7 @@ If there is no such entry in <em>thunk-alist</em>,
 invokes <em>else-thunk</em> and returns what it returns.</p>
 <p><code>(lazy-and-procedure</code>&nbsp;<em>thunk</em> ...<code>)</code></p>
 <p>The thunks are invoked from left
-to right, and if any thunk returns false, 
+to right, and if any thunk returns false,
 then <code>#f</code> is returned.
 Any remaining thunks are not invoked.
 If all the thunks return true
@@ -139,7 +139,7 @@ values, the values of the last thunk are returned. If
 there are no thunks, then <code>#t</code> is returned.</p>
 <p><code>(eager-and-procedure</code>&nbsp;<em>thunk</em> ...<code>)</code></p>
 <p>All the thunks are invoked from left
-to right.  If any thunk returns false, 
+to right.  If any thunk returns false,
 then <code>#f</code> is returned. If all the thunks return true
 values, the value of the last thunk are returned. If
 there are no thunks, then <code>#t</code> is returned.</p>

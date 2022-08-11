@@ -71,7 +71,7 @@ If a predicate is not satisfied, no more <em>predicates</em> are invoked.</p>
 <p>Returns <code>#t</code> if the <em>args</em> satisfy any of the <em>predicates</em>, and <code>#f</code> otherwise.
 If a predicate is satisfied, no other predicates are invoked.</p>
 <blockquote><pre>(map (disjoin even? exact?) '(1.0 1 2.0 2)) => '(#f #t #t #t)</pre></blockquote>
-<p><code>((for-each-of</code>&nbsp;<em>proc</em> ... <code>)</code> <em>arg</em> ...<code>)</code></p>
+<p><code>((each-of</code>&nbsp;<em>proc</em> ... <code>)</code> <em>arg</em> ...<code>)</code></p>
 <p>Applies each of the <em>procs</em> in turn to <em>args</em>,
 discarding the results and returning an unspecified value.</p>
 <blockquote><pre>ADD EXAMPLE</pre></blockquote>
@@ -235,6 +235,7 @@ Returns an unspecified value.</p>
 <p><code>(until-procedure</code>&nbsp;<em>thunk</em><code>)</code></p>
 <p>Invokes <em>thunk</em> repeatedly until it returns true.
 Returns an unspecified value.</p>
+<blockquote><pre>ADD EXAMPLE</pre></blockquote>
 <h2 id="other-procedures">Other procedures</h3>
 <p><code>(always</code>&nbsp;<em>obj</em> ...<code>)</code></p>
 <p>Ignores its arguments and always returns <code>#t</code>.</p>

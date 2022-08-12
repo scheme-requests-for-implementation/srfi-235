@@ -41,7 +41,7 @@ returns <code>#t</code> when <em>proc</em> would return <code>#f</code> when app
 and <code>#f</code> otherwise&quot;, which is more convoluted and harder to understand.
 However, this is merely a documentation style;
 it would be pointless to actually invoke these procedures in this fashion.</p>
-<h2 id="issues">Issues</h3>
+<h2 id="issues">Issues</h2>
 <p>None at present.</p>
 <h2 id="specification">Specification</h2>
 <p><code>((constantly</code>&nbsp;<em>obj</em> ...<code>)</code> <em>arg</em> ...<code>)</code></p>
@@ -153,7 +153,7 @@ it is returned.</p>
   (((1 2 3) (1 4 5))
    ((2 2 3))
 </pre></blockquote>
-<h2 id="syntax-like-procedures">Syntax-like procedures</h3>
+<h2 id="syntax-like-procedures">Syntax-like procedures</h2>
 <p>These are Scheme procedures that correspond to basic syntax.
 As usual in Lisps, <em>thunk</em> means a procedure that does not require arguments.
 The following procedures are understood to be defined in this section:</p>
@@ -257,7 +257,7 @@ If all thunks return
 Returns an unspecified value.</p>
 <blockquote><pre>
 (let ((i 0))
-  (while-procedure (< i 10)
+  (while-procedure (&lt; i 10)
     (lambda ()
       (display i)
       (set! i (+ i 1))))) => unspecified ;prints "0123456789"
@@ -267,12 +267,12 @@ Returns an unspecified value.</p>
 Returns an unspecified value.</p>
 <blockquote><pre>
 (let ((i 10))
-  (while-procedure (< i 0)
+  (while-procedure (&lt; i 0)
     (lambda ()
       (set! i (- i 1))
       (display i)))) => unspecified ;prints "9876543210"
 </pre></blockquote>
-<h2 id="other-procedures">Other procedures</h3>
+<h2 id="other-procedures">Other procedures</h2>
 <p><code>(always</code>&nbsp;<em>obj</em> ...<code>)</code></p>
 <p>Ignores its arguments and always returns <code>#t</code>.</p>
 <blockquote><pre>(always 1 2 3) => #t</pre></blockquote>

@@ -1,7 +1,7 @@
 .PHONY: test-guile test-gauche test-kawa test-chibi test-chicken
 
 test-guile:
-	guile -L / --r7rs srfi/235-test.scm
+	guile -L / --r7rs srfi-235-test.scm
 
 test-gauche:
 	gosh -I . srfi-235-test.scm
@@ -9,7 +9,7 @@ test-gauche:
 test-kawa:
 	cp srfi/235.sld srfi-235.scm
 	kawa srfi-235-test.scm
-	rm srfi/235.scm
+	rm srfi-235.scm
 
 test-chibi:
 	chibi-scheme srfi-235-test.scm

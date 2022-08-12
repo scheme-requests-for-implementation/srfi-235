@@ -48,13 +48,13 @@ it would be pointless to actually invoke these procedures in this fashion.</p>
 <p>Returns the <em>objs</em> as its values, ignoring <em>args</em>.</p>
 <blockquote><pre>(map (constantly 3) '(1 2 3)) => (3 3 3)</pre></blockquote>
 <p><code>((complement</code>&nbsp;<em>proc</em><code>)</code> <em>obj</em><code>)</code></p>
-<p>Returns <code>#t</code> when <code>(</code>&nbsp;<em>proc obj</em><code>)</code> returns <code>#f</code>, and <code>#f</code> otherwise.</p>
-<blockquote><pre>(map (complement #f) '(1 2 3)) => (#t #t #t)
-(map (complement 3) '(1 2 3)) => (#f #f #f)</pre></blockquote>
+<p>Returns <code>#t</code> when <code>(</code><em>proc obj</em><code>)</code> returns <code>#f</code>, and <code>#f</code> otherwise.</p>
+<blockquote><pre>(map (complement (lambda (x) #f)) '(1 2 3)) => (#t #t #t)
+(map (complement (lambda (x) 3)) '(1 2 3)) => (#f #f #f)</pre></blockquote>
 <p><code>((flip</code>&nbsp;<em>proc</em><code>) .</code> <em>objs</em><code>)</code></p>
 <p>Returns what <code>(apply</code>&nbsp;<em>proc</em> <code>(reverse</code>&nbsp;<em>objs</em> <code>)</code> returns.</p>
 <blockquote><pre>((flip list) 1 2 3) => (3 2 1)</pre></blockquote>
-<p><code>((flip</code>&nbsp;<em>proc</em><code>)</code> obj₁ obj₂<code>)</code></p>
+<p><code>((swap</code>&nbsp;<em>proc</em><code>)</code> obj₁ obj₂<code>)</code></p>
 <p>Returns <code>(</code>proc obj₂ obj₁<code>)</code>.</p>
 <blockquote><pre>((swap cons) 1 2) => (2 . 1)</pre></blockquote>
 <p><code>((on-left</code>&nbsp;<em>proc</em><code>)</code> <em>obj₁ obj₂</em><code>)</code></p>
@@ -79,7 +79,7 @@ discarding the results and returning an unspecified value.</p>
 (define (print-sum . numbers)
   (display
     (string-join (map number->string numbers)
-                 " " 'infix))
+                 "+" 'infix))
   (newline))
 
 (define (print-product . numbers)
@@ -93,14 +93,13 @@ discarding the results and returning an unspecified value.</p>
 1*2*3
 </pre></blockquote>
 <p><code>((all-of</code>&nbsp;<em>predicate</em><code>)</code> <em>list</em><code>)</code></p>
->>>>>>> 77a3f0372981bcac6380a3e68b8731aae126b292
 <p>Applies <em>predicate</em> to each element of <em>list</em> in turn,
 and immediately returns <code>#f</code> if <em>predicate</em> is not satisfied by that element;
 otherwise returns the result of the last call to <em>predicate</em>.
 If <em>list</em> is empty, returns <code>#t</code>.</p>
 <blockquote><pre>
-(apply (all-of even?) '(2 4 6)) => #t
-(apply (all-of odd?) '(1 2 3)) => #f
+((all-of even?) '(2 4 6)) => #t
+((all-of odd?) '(1 2 3)) => #f
 </pre></blockquote>
 <p><code>((some-of</code>&nbsp;<em>predicate</em><code>)</code> <em>list</em><code>)</code></p>
 <p>Applies <em>predicate</em> to each element of <em>list</em> in turn,
@@ -108,13 +107,13 @@ and if <em>predicate</em> is satisfied by that element,
 immediately returns the result of calling <em>predicate</em>;
 otherwise returns <code>#f</code>.  If <em>list</em> is empty, returns <code>#f</code>.</p>
 <blockquote><pre>
-(apply (some-of even?) '(2 4 5)) => #t
-(apply (some-of odd?) '(2 4 6)) => #f
+((some-of even?) '(2 4 5)) => #t
+((some-of odd?) '(2 4 6)) => #f
 </pre></blockquote>
 <p><code>((on</code>&nbsp;<em>reducer mapper</em><code>)</code> <em>obj</em> ...<code>)</code></p>
 <p>Applies <em>mapper</em> to each <em>obj</em> in any order
 and then applies <em>reducer</em> to all of the results.</p>
-<blockquote><pre>((on + -) 1 2 3) =></pre></blockquote>
+<blockquote><pre>((on + -) 1 2 3) => -6</pre></blockquote>
 <p><code>((left-section</code>&nbsp;<em>proc arg</em> ...<code>)</code> <em>obj</em> ...<code>)</code></p>
 <p>Applies <em>proc</em> to <em>args</em> concatenated with <em>objs</em>.</p>
 <blockquote><pre>(map (left-section - 1) '(1 2 3)) => (0 -1 -2)</pre></blockquote>
@@ -149,7 +148,7 @@ the first elements of each list also appear in the same
 order as they do in <em>list</em>.  If <em>list</em> is the empty list,
 it is returned.</p>
 <blockquote><pre>
-(apply (group-by car) '((1 2 3) (2 2 3) (1 4 5))) =>
+((group-by car) '((1 2 3) (2 2 3) (1 4 5))) =>
   (((1 2 3) (1 4 5))
    ((2 2 3))
 </pre></blockquote>
@@ -158,20 +157,20 @@ it is returned.</p>
 As usual in Lisps, <em>thunk</em> means a procedure that does not require arguments.
 The following procedures are understood to be defined in this section:</p>
 <blockquote><pre>
-  (lambda () (display #\a))
-  (lambda () (display #\b))
-  (lambda () (display #\c)))
+  (define (a) (display #\a))
+  (define (b) (display #\b))
+  (define (c) (display #\c)))
 </pre></blockquote>
 <p><code>(begin-procedure</code>&nbsp;<em>thunk</em> ...<code>)</code></p>
 <p>Invokes <em>thunks</em> in order, and returns what the last thunk returns,
 or an unspecified value if there are no thunks.</p>
-<blockquote><pre>(begin-proc a b c) => unspecified (displays "abc")</pre></blockquote>
+<blockquote><pre>(begin-procedure a b c) => unspecified (displays "abc")</pre></blockquote>
 <p><code>(if-procedure</code>&nbsp;<em>value then-thunk</em> <em>else-thunk</em><code>)</code></p>
 <p>If <em>value</em> is true, invokes <em>then-thunk</em> and returns what it returns.
 Otherwise, invokes <em>else-thunk</em> and returns what it returns.</p>
 <blockquote><pre>
-(if-procedure #t (lambda () 1) (lambda () 2)) => 1)
-(if-procedure #f (lambda () 1) (lambda () 2)) => 2)
+(if-procedure #t (lambda () 1) (lambda () 2)) => 1
+(if-procedure #f (lambda () 1) (lambda () 2)) => 2
 </pre></blockquote>
 <p><code>(when-procedure</code>&nbsp;<em>value thunk</em> ...<code>)</code><br><code>(unless-procedure</code>&nbsp;<em>value thunk</em> ...<code>)</code></p>
 <p>If <em>value</em> is false/true, immediately returns.
@@ -188,8 +187,8 @@ n all cases an unspecified value is returned.</p>
 and returns what <em>then-proc</em> returns.
 Otherwise, invokes <em>else-thunk</em> and returns what it returns.</p>
 <blockquote><pre>
-(if-procedure 2 (lambda (x) (+ x 1)) (lambda () 0)) => 3)
-(if-procedure #f (lambda (x) (+ x 1)) (lambda () 0)) => 0)
+(value-procedure 2 (lambda (x) (+ x 1)) (lambda () 0)) => 3)
+(value-procedure #f (lambda (x) (+ x 1)) (lambda () 0)) => 0)
 </pre></blockquote>
 <p><code>(case-procedure</code>&nbsp;<em>value thunk-alist</em> <em>else-thunk</em><code>)</code></p>
 <p>Searches <em>thunk-alist</em> for <em>value</em> (as if by <code>assv</code>).
@@ -198,7 +197,7 @@ its cdr is invoked as a thunk, and <code>case-procedure</code> returns what the 
 If there is no such entry in <em>thunk-alist</em>,
 invokes <em>else-thunk</em> and returns what it returns.</p>
 <blockquote><pre>
-(case-procedure 3 `((1 . a) (2 . b) (3 . c))) => undefined ;displays "b"
+(case-procedure 2 `((1 . ,a) (2 . ,b) (3 . ,c))) => undefined ;displays "b"
 </pre></blockquote>
 <p><code>(lazy-and-procedure</code>&nbsp;<em>thunk</em> ...<code>)</code></p>
 <p>The thunks are invoked from left
@@ -251,26 +250,28 @@ If all thunks return
 </pre></blockquote>
 <p><code>(loop-procedure</code>&nbsp;<em>thunk</em><code>)</code></p>
 <p>Invokes <em>thunk</em> repeatedly.  Does not return unless via <code>call/cc</code>.</p>
-<blockquote><pre>(loop-procedure a b) => ; #displays "abab..." forever</pre></blockquote>
+<blockquote><pre>(loop-procedure (lambda () (a) (b))) => ; #displays "abab..." forever</pre></blockquote>
 <p><code>(while-procedure</code>&nbsp;<em>thunk</em><code>)</code></p>
 <p>Invokes <em>thunk</em> repeatedly until it returns false.
 Returns an unspecified value.</p>
 <blockquote><pre>
 (let ((i 0))
-  (while-procedure (&lt; i 10)
-    (lambda ()
-      (display i)
-      (set! i (+ i 1))))) => unspecified ;prints "0123456789"
+    (while-procedure
+      (lambda ()
+	(display i)
+	(set! i (+ i 1))
+	(&lt; i 10)))) => unspecified ;prints "0123456789"
 </pre></blockquote>
 <p><code>(until-procedure</code>&nbsp;<em>thunk</em><code>)</code></p>
 <p>Invokes <em>thunk</em> repeatedly until it returns true.
 Returns an unspecified value.</p>
 <blockquote><pre>
 (let ((i 10))
-  (while-procedure (&lt; i 0)
+  (while-procedure
     (lambda ()
       (set! i (- i 1))
-      (display i)))) => unspecified ;prints "9876543210"
+      (display i)
+       (&gt; i 0)))) => unspecified ;prints "9876543210"
 </pre></blockquote>
 <h2 id="other-procedures">Other procedures</h2>
 <p><code>(always</code>&nbsp;<em>obj</em> ...<code>)</code></p>

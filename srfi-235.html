@@ -74,19 +74,41 @@ If a predicate is satisfied, no other predicates are invoked.</p>
 <p><code>((each-of</code>&nbsp;<em>proc</em> ... <code>)</code> <em>arg</em> ...<code>)</code></p>
 <p>Applies each of the <em>procs</em> in turn to <em>args</em>,
 discarding the results and returning an unspecified value.</p>
-<blockquote><pre>ADD EXAMPLE</pre></blockquote>
+<blockquote><pre>
+(define (print-sum . numbers)
+  (display
+    (string-join (map number->string numbers)
+                 " " 'infix))
+  (newline))
+
+(define (print-product . numbers)
+  (display
+    (string-join (map number->string numbers)
+                 "*" 'infix))
+  (newline))
+
+((each-of print-sum print-product) 1 2 3) => undefined ;prints:
+1+2+3
+1*2*3
+</pre></blockquote>
 <p><code>((all-of</code>&nbsp;<em>predicate</em><code>)</code> <em>list</em><code>)</code></p>
 <p>Applies <em>predicate</em> to each element of <em>list</em> in turn,
 and immediately returns <code>#f</code> if <em>predicate</em> is not satisfied by that element;
 otherwise returns the result of the last call to <em>predicate</em>.
 If <em>list</em> is empty, returns <code>#t</code>.</p>
-<blockquote><pre>ADD EXAMPLE</pre></blockquote>
+<blockquote><pre>
+(apply (all-of even?) '(2 4 6)) => #t
+(apply (all-of odd?) '(1 2 3)) => #f
+</pre></blockquote>
 <p><code>((some-of</code>&nbsp;<em>predicate</em><code>)</code> <em>list</em><code>)</code></p>
 <p>Applies <em>predicate</em> to each element of <em>list</em> in turn,
 and if <em>predicate</em> is satisfied by that element,
 immediately returns the result of calling <em>predicate</em>;
 otherwise returns <code>#f</code>.  If <em>list</em> is empty, returns <code>#f</code>.</p>
-<blockquote><pre>ADD EXAMPLE</pre></blockquote>
+<blockquote><pre>
+(apply (some-of even?) '(2 4 5)) => #t
+(apply (some-of odd?) '(2 4 6)) => #f
+</pre></blockquote>
 <p><code>((on</code>&nbsp;<em>reducer mapper</em><code>)</code> <em>obj</em> ...<code>)</code></p>
 <p>Applies <em>mapper</em> to each <em>obj</em> in any order
 and then applies <em>reducer</em> to all of the results.</p>
@@ -102,8 +124,8 @@ and then applies <em>reducer</em> to all of the results.</p>
 then applies the previous <em>proc</em> to the values, returning more values,
 until the first proc has been invoked; its values are returned.
 For example, <code>(apply-chain car cdr)</code> returns a procedure that
-behaves like <code>cadr</code>.</p>
-<blockquote><pre>ADD EXAMPLE</pre></blockquote>
+behaves like <code>cadr</code>:</p>
+<blockquote><pre>(map (apply-chain car cdr) '((1 2 3) (4 5 6))) => (2 5)</pre></blockquote>
 <p><code>((arguments-drop</code> <em>proc n</em><code>)</code> <em>arg</em> ...<code>)</code><br><code>((arguments-drop-right</code> <em>proc n</em><code>)</code> <em>arg</em> ...<code>)</code><br><code>((arguments-take</code> <em>proc n</em><code>)</code> <em>arg</em> ...<code>)</code><br><code>((arguments-take-right</code> <em>proc n</em><code>)</code> <em>arg</em> ...<code>)</code></p>
 <p>Apply <em>proc</em> to the <em>args</em> after taking/dropping <em>n</em> arguments
 from <em>args</em>.</p>
@@ -231,11 +253,23 @@ If all thunks return
 <p><code>(while-procedure</code>&nbsp;<em>thunk</em><code>)</code></p>
 <p>Invokes <em>thunk</em> repeatedly until it returns false.
 Returns an unspecified value.</p>
-<blockquote><pre>ADD EXAMPLE</pre></blockquote>
+<blockquote><pre>
+(let ((i 0))
+  (while-procedure (< i 10)
+    (lambda ()
+      (display i)
+      (set! i (+ i 1))))) => unspecified ;prints "0123456789"
+</pre></blockquote>
 <p><code>(until-procedure</code>&nbsp;<em>thunk</em><code>)</code></p>
 <p>Invokes <em>thunk</em> repeatedly until it returns true.
 Returns an unspecified value.</p>
-<blockquote><pre>ADD EXAMPLE</pre></blockquote>
+<blockquote><pre>
+(let ((i 10))
+  (while-procedure (< i 0)
+    (lambda ()
+      (set! i (- i 1))
+      (display i)))) => unspecified ;prints "9876543210"
+</pre></blockquote>
 <h2 id="other-procedures">Other procedures</h3>
 <p><code>(always</code>&nbsp;<em>obj</em> ...<code>)</code></p>
 <p>Ignores its arguments and always returns <code>#t</code>.</p>

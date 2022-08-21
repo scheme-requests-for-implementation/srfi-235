@@ -98,16 +98,6 @@
                     (car procs)))
                 (cdr procs))))))
 
-(define (arguments-all proc)
-  (define all-of* (all-of proc))
-  (lambda args
-    (all-of* args)))
-
-(define (arguments-any proc)
-  (define some-of* (some-of proc))
-  (lambda args
-    (some-of* args)))
-
 (define (arguments-drop/take proc drop/take n)
   (lambda args
     (apply proc (drop/take args n))))

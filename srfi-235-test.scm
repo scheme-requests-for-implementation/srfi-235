@@ -212,49 +212,6 @@
 
 
 (test-group
- "arguments-all"
-
- (test-assert
-     ((arguments-all string?)))
-
- (test-assert
-     ((arguments-all string?) "a" "b"))
-
- (test-assert
-     (not ((arguments-all string?) "a" 'b)))
-
- (test-assert
-     (not ((arguments-all (lambda (x)
-                     (when (equal? x 'c)
-                       ;; should short circuit before this point
-                       (test-assert #f))
-                     (string? x)))
-           "a" 'b 'c))))
-
-
-
-(test-group
- "arguments-any"
-
- (test-assert
-     (not ((arguments-any string?))))
-
- (test-assert
-     ((arguments-any string?) "a" 'b))
-
- (test-assert
-     (not ((arguments-any string?) 'a 'b)))
-
- (test-assert
-     ((arguments-any (lambda (x)
-                (when (equal? x 'b)
-                  ;; should short circuit before this point
-                  (test-assert #f))
-                (string? x)))
-      "a" 'b)))
-
-
-(test-group
   "arguments-drop"
   
   (test-equal

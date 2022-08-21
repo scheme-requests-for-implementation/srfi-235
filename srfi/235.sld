@@ -21,8 +21,6 @@
         left-section
         right-section
         apply-chain
-        arguments-all
-        arguments-any
         arguments-drop
         arguments-drop-right
         arguments-take

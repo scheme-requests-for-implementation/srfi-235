@@ -68,17 +68,22 @@ it would be pointless to actually invoke these procedures in this fashion.</p>
 <p>Returns (<em>proc obj₂</em>).</p>
 <blockquote><pre>(map (on-right list) '(1 2 3) '(4 5 6)) => '((4) (5) (6))</pre></blockquote>
 <p><code>((conjoin</code>&nbsp;<em>predicate</em> ...<code>)</code> <em>arg</em> ...<code>)</code></p>
-<p>Returns <code>#t</code> if the <em>args</em> satisfy all the <em>predicates</em>, and <code>#f</code> otherwise.
-If a predicate is not satisfied, no more <em>predicates</em> are invoked.</p>
+The <em>predicates</em> are applied in turn to the <em>args</em> as follows:
+If a call to a predicate returns false, no more predicates are applied
+and <code>#f</code> is returned.
+If all predicates return true, then the last value is returned.
+If there are no predicates, <code>#t</code> is returned.
 <blockquote><pre>(map (conjoin even? exact?) '(1.0 1 2.0 2)) => '(#f #f #f #t)</pre></blockquote>
 <p><code>((disjoin</code>&nbsp;<em>predicate</em> ...<code>)</code> <em>arg</em> ...<code>)</code></p>
-<p>Returns <code>#t</code> if the <em>args</em> satisfy any of the <em>predicates</em>, and <code>#f</code> otherwise.
-If a predicate is satisfied, no other predicates are invoked.</p>
+The <em>predicates</em> are applied in turn to the <em>args</em> as follows:
+If a call to a predicate returns true, no more predicates are applied
+and its value is returned.
+If all predicates return false, then the last value is returned.
+If there are no predicates, <code>#f</code> is returned.
 <blockquote><pre>(map (disjoin even? exact?) '(1.0 1 2.0 2)) => '(#f #t #t #t)</pre></blockquote>
 <p><code>((each-of</code>&nbsp;<em>proc</em> ... <code>)</code> <em>arg</em> ...<code>)</code></p>
 <p>Applies each of the <em>procs</em> in turn to <em>args</em>,
 discarding the results and returning an unspecified value.</p>
-<p><code>((all-of</code>&nbsp;<em>predicate</em><code>)</code> <em>list</em><code>)</code></p>
 <blockquote><pre>
 (define (print-sum . numbers)
   (display
@@ -164,6 +169,7 @@ The following procedures are understood to be defined in this section:</p>
   (define (a) (display #\a))
   (define (b) (display #\b))
   (define (c) (display #\c)))
+  (define (z) (display #\z)))
 </pre></blockquote>
 <p><code>(begin-procedure</code>&nbsp;<em>thunk</em> ...<code>)</code></p>
 <p>Invokes <em>thunks</em> in order, and returns what the last thunk returns,
@@ -199,8 +205,11 @@ Otherwise, invokes <em>else-thunk</em> and returns what it returns.</p>
 If there is a matching entry in <em>thunk-alist</em>,
 its cdr is invoked as a thunk, and <code>case-procedure</code> returns what the thunk returns.
 If there is no such entry in <em>thunk-alist</em>,
-invokes <em>else-thunk</em> and returns what it returns.</p>
+invokes <em>else-thunk</em> (if present) and returns what it returns.
+If <em>else-thunk</em> is not present, the result is undefined.
 <blockquote><pre>
+(case-procedure 0 `((1 . ,a) (2 . ,z) (3 . ,c)) z) => undefined ;displays "z"
+(case-procedure 0 `((1 . ,a) (2 . ,z) (3 . ,c))) => undefined ;displays nothing 
 (case-procedure 2 `((1 . ,a) (2 . ,b) (3 . ,c))) => undefined ;displays "b"
 </pre></blockquote>
 <p><code>(lazy-and-procedure</code>&nbsp;<em>thunk</em> ...<code>)</code></p>

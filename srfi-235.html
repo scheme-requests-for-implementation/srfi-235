@@ -58,8 +58,8 @@ it would be pointless to actually invoke these procedures in this fashion.</p>
 <p><code>((flip</code>&nbsp;<em>proc</em><code>) .</code> <em>objs</em><code>)</code></p>
 <p>Returns what <code>(apply</code>&nbsp;<em>proc</em> <code>(reverse</code>&nbsp;<em>objs</em> <code>)</code> returns.</p>
 <blockquote><pre>((flip list) 1 2 3) => (3 2 1)</pre></blockquote>
-<p><code>((swap</code>&nbsp;<em>proc</em><code>)</code> obj₁ obj₂<code>)</code></p>
-<p>Returns <code>(</code>proc obj₂ obj₁<code>)</code>.</p>
+<p><code>((swap</code>&nbsp;<em>proc</em><code>)</code> <em>obj₁ obj₂ . objs</em><code>)</code></p>
+<p>Returns <code>(apply</code>&nbsp;<em>proc obj₂ obj₁ objs</em><code>)</code>.</p>
 <blockquote><pre>((swap cons) 1 2) => (2 . 1)</pre></blockquote>
 <p><code>((on-left</code>&nbsp;<em>proc</em><code>)</code> <em>obj₁ obj₂</em><code>)</code></p>
 <p>Returns (<em>proc obj₁</em>).</p>
@@ -119,7 +119,7 @@ otherwise returns <code>#f</code>.  If <em>list</em> is empty, returns <code>#f<
 ((some-of even?) '(2 4 5)) => #t
 ((some-of odd?) '(2 4 6)) => #f
 </pre></blockquote>
-<p><code>((on</code>&nbsp;<em>reducer mapper</em><code>)</code> <em>obj</em> ...<code>)</code></p>
+<p><code>((on</code>&nbsp;<em>reducer mapper</em><code>)</code> <em>obj₁ obj</em> ...<code>)</code></p>
 <p>Applies <em>mapper</em> to each <em>obj</em> in any order
 and then applies <em>reducer</em> to all of the results.</p>
 <blockquote><pre>((on + -) 1 2 3) => -6</pre></blockquote>
@@ -129,7 +129,7 @@ and then applies <em>reducer</em> to all of the results.</p>
 <p><code>((right-section</code>&nbsp;<em>proc arg</em> ...<code>)</code> <em>obj</em> ...<code>)</code></p>
 <p>Applies <em>proc</em> to <em>objs</em> concatenated with the value of <code>(reverse</code>&nbsp;<em>args</em><code>)</code>.</p>
 <blockquote><pre>(map (right-section - 1) '(1 2 3)) => (0 1 2)</pre></blockquote>
-<p><code>((apply-chain</code>&nbsp;<em>proc</em> ...<code>)</code> arg ...)`</p>
+<p><code>((apply-chain</code>&nbsp;<em>proc₁ proc</em> ...<code>)</code> arg ...)`</p>
 <p>Applies the last <em>proc</em> to <em>args</em> returning zero or more values,
 then applies the previous <em>proc</em> to the values, returning more values,
 until the first proc has been invoked; its values are returned.
@@ -164,7 +164,8 @@ it is returned.</p>
 <h2 id="syntax-like-procedures">Syntax-like procedures</h2>
 <p>These are Scheme procedures that correspond to basic syntax.
 As usual in Lisps, <em>thunk</em> means a procedure that does not require arguments.
-The following procedures are understood to be defined in this section:</p>
+However, for the purposes of this SRFI a promise is considered a thunk as well.</p>
+<p>The following procedures are understood to be defined in this section:</p>
 <blockquote><pre>
   (define (a) (display #\a))
   (define (b) (display #\b))
@@ -200,7 +201,7 @@ Otherwise, invokes <em>else-thunk</em> and returns what it returns.</p>
 (value-procedure 2 (lambda (x) (+ x 1)) (lambda () 0)) => 3)
 (value-procedure #f (lambda (x) (+ x 1)) (lambda () 0)) => 0)
 </pre></blockquote>
-<p><code>(case-procedure</code>&nbsp;<em>value thunk-alist</em> <em>else-thunk</em><code>)</code></p>
+<p><code>(case-procedure</code>&nbsp;<em>value thunk-alist</em> [ <em>else-thunk</em> ]<code>)</code></p>
 <p>Searches <em>thunk-alist</em> for <em>value</em> (as if by <code>assv</code>).
 If there is a matching entry in <em>thunk-alist</em>,
 its cdr is invoked as a thunk, and <code>case-procedure</code> returns what the thunk returns.

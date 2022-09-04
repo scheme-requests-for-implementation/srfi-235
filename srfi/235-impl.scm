@@ -56,10 +56,12 @@
 
 (define (all-of predicate)
   (lambda (lst)
-    (let loop ((lst lst))
+    (let loop ((lst lst)
+               (last #t))
       (cond
-       ((null? lst) #t)
-       ((predicate (car lst)) (loop (cdr lst)))
+       ((null? lst) last)
+       ((predicate (car lst)) => (lambda (value)
+                                   (loop (cdr lst) value)))
        (else #f)))))
 
 (define (some-of predicate)
@@ -69,7 +71,7 @@
         (let loop ((lst lst))
           (cond
            ((null? lst) #f)
-           ((predicate (car lst)) #t)
+           ((predicate (car lst)) => identity)
            (else (loop (cdr lst))))))))
 
 (define (on reducer mapper)

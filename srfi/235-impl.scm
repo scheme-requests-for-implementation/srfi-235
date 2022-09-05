@@ -71,7 +71,7 @@
         (let loop ((lst lst))
           (cond
            ((null? lst) #f)
-           ((predicate (car lst)) => identity)
+           ((predicate (car lst)))
            (else (loop (cdr lst))))))))
 
 (define (on reducer mapper)

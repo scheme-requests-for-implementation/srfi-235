@@ -139,6 +139,10 @@
  (test-assert
      ((all-of string?) '("a" "b")))
 
+ (test-equal
+   "b"
+   ((all-of identity) '("a" "b")))
+
  (test-assert
      (not ((all-of string?) '("a" b))))
 
@@ -160,6 +164,10 @@
 
  (test-assert
      ((some-of string?) '("a" b)))
+
+ (test-equal
+   "a"
+   ((some-of identity) '("a" "b")))
 
  (test-assert
      (not ((some-of string?) '(a b))))

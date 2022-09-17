@@ -185,8 +185,8 @@ As usual in Lisps, <em>thunk</em> means a procedure that does not require argume
 <blockquote><pre>
   (define (a) (display #\a))
   (define (b) (display #\b))
-  (define (c) (display #\c)))
-  (define (z) (display #\z)))
+  (define (c) (display #\c))
+  (define (z) (display #\z))
 </pre></blockquote>
 <p><code>(begin-procedure</code>&nbsp;<em>thunk</em> ...<code>)</code></p>
 <p>Invokes <em>thunks</em> in order, and returns what the last thunk returns,

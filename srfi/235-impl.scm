@@ -64,7 +64,7 @@
                                    (loop (cdr lst) value)))
        (else #f)))))
 
-(define (some-of predicate)
+(define (any-of predicate)
   (lambda (lst)
     (if (null? lst)
         #f

@@ -157,23 +157,23 @@
 
 
 (test-group
- "some-of"
+ "any-of"
 
  (test-assert
-     (not ((some-of string?) '())))
+     (not ((any-of string?) '())))
 
  (test-assert
-     ((some-of string?) '("a" b)))
+     ((any-of string?) '("a" b)))
 
  (test-equal
    "a"
-   ((some-of identity) '("a" "b")))
+   ((any-of identity) '("a" "b")))
 
  (test-assert
-     (not ((some-of string?) '(a b))))
+     (not ((any-of string?) '(a b))))
 
  (test-assert
-     ((some-of (lambda (x)
+     ((any-of (lambda (x)
                 (when (equal? x 'b)
                   ;; should short circuit before this point
                   (test-assert #f))

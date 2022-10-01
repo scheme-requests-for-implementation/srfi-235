@@ -120,21 +120,23 @@ discarding the results and returning an unspecified value.</p>
 </pre></blockquote>
 <p><code>((all-of</code>&nbsp;<em>predicate</em><code>)</code> <em>list</em><code>)</code></p>
 <p>Applies <em>predicate</em> to each element of <em>list</em> in turn,
-and immediately returns <code>#f</code> if <em>predicate</em> is not satisfied by that element;
-otherwise returns the result of the last call to <em>predicate</em>.
+and immediately returns <code>#f</code> if <em>predicate</em> is not satisfied by that element.
+If every element satisfies <em>predicate</em>,
+returns the result of the last call to <em>predicate</em>.
 If <em>list</em> is empty, returns <code>#t</code>.</p>
 <blockquote><pre>
 ((all-of even?) '(2 4 6)) => #t
 ((all-of odd?) '(1 2 3)) => #f
 </pre></blockquote>
-<p><code>((some-of</code>&nbsp;<em>predicate</em><code>)</code> <em>list</em><code>)</code></p>
+<p><code>((any-of</code>&nbsp;<em>predicate</em><code>)</code> <em>list</em><code>)</code></p>
 <p>Applies <em>predicate</em> to each element of <em>list</em> in turn,
 and if <em>predicate</em> is satisfied by that element,
-immediately returns the result of calling <em>predicate</em>;
-otherwise returns <code>#f</code>.  If <em>list</em> is empty, returns <code>#f</code>.</p>
+immediately returns the result of calling <em>predicate</em>.
+If no element satisfies <em>predicate</em> returns <code>#f</code>.
+If <em>list</em> is empty, returns <code>#f</code>.</p>
 <blockquote><pre>
-((some-of even?) '(2 4 5)) => #t
-((some-of odd?) '(2 4 6)) => #f
+((any-of even?) '(2 4 5)) => #t
+((any-of odd?) '(2 4 6)) => #f
 </pre></blockquote>
 <p><code>((on</code>&nbsp;<em>reducer mapper</em><code>)</code> <em>obj₁ obj</em> ...<code>)</code></p>
 <p>Applies <em>mapper</em> to each <em>obj</em> in any order

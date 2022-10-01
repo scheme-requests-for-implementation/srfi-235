@@ -16,7 +16,7 @@
         disjoin
         each-of
         all-of
-        some-of
+        any-of
         on
         left-section
         right-section

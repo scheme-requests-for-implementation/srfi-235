@@ -43,6 +43,5 @@
 
         always
         never
-        boolean
-        identity)
+        boolean)
     (include "235-impl.scm"))

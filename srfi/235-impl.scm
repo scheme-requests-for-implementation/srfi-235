@@ -206,7 +206,7 @@
     (thunks (let loop ((thunks thunks))
               (cond
                ((null? thunks) #f)
-               (((car thunks)) => identity)
+               (((car thunks)) => values)
                (else (loop (cdr thunks))))))))
 
 (define eager-or-procedure
@@ -243,5 +243,3 @@
 
 (define (boolean obj)
   (if obj #t #f))
-
-(define (identity obj) obj)

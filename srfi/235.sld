@@ -37,6 +37,7 @@
         eager-and-procedure
         lazy-or-procedure
         eager-or-procedure
+        funcall-procedure
         loop-procedure
         while-procedure
         until-procedure

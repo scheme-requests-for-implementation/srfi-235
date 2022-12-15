@@ -280,6 +280,9 @@ If all thunks return
   (lambda () #f)
   (lambda () (error "fail"))) => <em>error</em>
 </pre></blockquote>
+<p><code>(funcall-procedure</code>&nbsp;<em>thunk</em><code>)</code></p>
+<p>Invokes <em>thunk</em> once, and returns what it returns.
+Note that the name <code>funcall</code> is derived from Common Lisp.</p>
 <p><code>(loop-procedure</code>&nbsp;<em>thunk</em><code>)</code></p>
 <p>Invokes <em>thunk</em> repeatedly.  Does not return unless via <code>call/cc</code>.</p>
 <blockquote><pre>(loop-procedure (lambda () (a) (b))) => ; #displays "abab..." forever</pre></blockquote>

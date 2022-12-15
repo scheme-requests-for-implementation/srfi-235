@@ -222,6 +222,9 @@
                                               res))))
                (else (loop (cdr thunks) result)))))))
 
+(define (funcall-procedure thunk)
+  (thunk))
+
 (define (loop-procedure thunk)
   (thunk)
   (loop-procedure thunk))

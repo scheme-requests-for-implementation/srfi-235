@@ -141,7 +141,7 @@
 
  (test-equal
    "b"
-   ((all-of identity) '("a" "b")))
+   ((all-of values) '("a" "b")))
 
  (test-assert
      (not ((all-of string?) '("a" b))))
@@ -167,7 +167,7 @@
 
  (test-equal
    "a"
-   ((any-of identity) '("a" "b")))
+   ((any-of values) '("a" "b")))
 
  (test-assert
      (not ((any-of string?) '(a b))))
@@ -436,7 +436,11 @@
                           #f)))
   (test-assert second-called?)))
 
+(test-group
+ "funcall-procedure"
 
+ (test-equal 1
+    (funcall-procedure (lambda () 1)))) 
 
 (test-group
  "loop-procedure"
@@ -500,10 +504,10 @@
 
 
 (test-group
- "identity"
+ "values"
 
- (test-equal 1 (identity 1))
- (test-equal 'a (identity 'a)))
+ (test-equal 1 (values 1))
+ (test-equal 'a (values 'a)))
 
 
 (test-end)

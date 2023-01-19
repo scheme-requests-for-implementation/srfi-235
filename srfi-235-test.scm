@@ -367,17 +367,17 @@
 
 
 (test-group
- "lazy-and-procedure"
+ "and-procedure"
 
  (test-assert
-     (lazy-and-procedure))
+     (and-procedure))
 
  (test-equal 2
-   (lazy-and-procedure (lambda () 1)
+   (and-procedure (lambda () 1)
                        (lambda () 2)))
 
  (test-assert
-     (not (lazy-and-procedure (lambda () #f)
+     (not (and-procedure (lambda () #f)
                               (lambda () (test-assert #f))))))
 
 
@@ -403,17 +403,17 @@
 
 
 (test-group
- "lazy-or-procedure"
+ "or-procedure"
 
  (test-assert
-     (not (lazy-or-procedure)))
+     (not (or-procedure)))
 
  (test-equal 2
-   (lazy-or-procedure (lambda () #f)
+   (or-procedure (lambda () #f)
                  (lambda () 2)))
 
  (test-assert
-     (lazy-or-procedure (lambda () 1)
+     (or-procedure (lambda () 1)
                    (lambda () (test-assert #f)))))
 
 

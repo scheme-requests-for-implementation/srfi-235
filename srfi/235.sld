@@ -33,9 +33,9 @@
         unless-procedure
         value-procedure
         case-procedure
-        lazy-and-procedure
+        and-procedure
         eager-and-procedure
-        lazy-or-procedure
+        or-procedure
         eager-or-procedure
         funcall-procedure
         loop-procedure

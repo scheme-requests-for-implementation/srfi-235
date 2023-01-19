@@ -180,7 +180,7 @@
                                      ((cdr entry))))
       (else (else-thunk))))))
 
-(define lazy-and-procedure
+(define and-procedure
   (case-lambda
     (() #t)
     (thunks (let loop ((thunks thunks))
@@ -200,7 +200,7 @@
                ((not ((car thunks))) (loop (cdr thunks) #f))
                (else (loop (cdr thunks) result)))))))
 
-(define lazy-or-procedure
+(define or-procedure
   (case-lambda
     (() #f)
     (thunks (let loop ((thunks thunks))

@@ -140,7 +140,8 @@ If <em>list</em> is empty, returns <code>#f</code>.</p>
 </pre></blockquote>
 <p><code>((on</code>&nbsp;<em>reducer mapper</em><code>)</code> <em>obj₁ obj</em> ...<code>)</code></p>
 <p>Applies <em>mapper</em> to each <em>obj</em> in any order
-and then applies <em>reducer</em> to all of the results.</p>
+and then applies <em>reducer</em> to all of
+the results in left to right order.</p>
 <blockquote><pre>((on + -) 1 2 3) => -6</pre></blockquote>
 <p><code>((left-section</code>&nbsp;<em>proc arg</em> ...<code>)</code> <em>obj</em> ...<code>)</code></p>
 <p>Applies <em>proc</em> to <em>args</em> concatenated with <em>objs</em>.</p>

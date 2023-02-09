@@ -228,7 +228,7 @@ invokes <em>else-thunk</em> (if present) and returns what it returns.
 If <em>else-thunk</em> is not present, the result is undefined.
 <blockquote><pre>
 (case-procedure 0 `((1 . ,a) (2 . ,z) (3 . ,c)) z) => undefined ;displays "z"
-(case-procedure 0 `((1 . ,a) (2 . ,z) (3 . ,c))) => undefined ;displays nothing 
+(case-procedure 0 `((1 . ,a) (2 . ,z) (3 . ,c))) => undefined ;displays nothing
 (case-procedure 2 `((1 . ,a) (2 . ,b) (3 . ,c))) => undefined ;displays "b"
 </pre></blockquote>
 <p><code>(and-procedure</code>&nbsp;<em>thunk</em> ...<code>)</code></p>

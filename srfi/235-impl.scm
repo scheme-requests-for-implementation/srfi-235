@@ -217,7 +217,7 @@
               (cond
                ((null? thunks) result)
                (((car thunks)) => (lambda (res)
-                                    (loop (cdr thunks) 
+                                    (loop (cdr thunks)
                                           (or result
                                               res))))
                (else (loop (cdr thunks) result)))))))

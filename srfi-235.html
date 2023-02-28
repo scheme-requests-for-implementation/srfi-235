@@ -37,10 +37,13 @@ and reduce the need for ad hoc lambdas.</p>
 
 <p>Many procedures such as <code>map</code>, <code>filter</code>,
 <code>fold</code>, and their equivalents for data structures other
-than lists.  This leads to two situations:</p>
+than lists accept an argument specifying the behavior to be performed
+on each element of the data structure.
+This can be done in one of two ways:
+</p>
 <ul>
 <li>The code uses a <code>lambda</code> to describe the needed behavior
-<li>Alternatively, it is possible to move the <code>lambda</code> into
+<li>The code is placed in
 an internal or external <code>define</code>, which requires finding a
 good name and splits the action into different locations, making the
 code harder to read.</li>
@@ -250,7 +253,7 @@ there are no thunks, then <code>#t</code> is returned.</p>
 <p>All the thunks are invoked from left
 to right.  If any thunk returns false,
 then <code>#f</code> is returned. If all the thunks return true
-values, the value of the last thunk are returned. If
+values, the value of the last thunk is returned. If
 there are no thunks, then <code>#t</code> is returned.</p>
 <blockquote><pre>
 (eager-and-procedure

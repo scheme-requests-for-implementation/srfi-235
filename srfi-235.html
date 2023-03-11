@@ -204,7 +204,7 @@ Otherwise, invokes <em>else-thunk</em> and returns what it returns.</p>
 <p><code>(when-procedure</code>&nbsp;<em>value thunk</em> ...<code>)</code><br><code>(unless-procedure</code>&nbsp;<em>value thunk</em> ...<code>)</code></p>
 <p>If <em>value</em> is false/true, immediately returns.
 Otherwise, invokes each <em>thunk</em> in turn and then returns.
-n all cases an unspecified value is returned.</p>
+In all cases an unspecified value is returned.</p>
 <blockquote><pre>
 (when-procedure #t a b c) => unspecified ;prints "abc"
 (when-procedure #f a b c) => unspecified ;prints nothing

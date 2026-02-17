@@ -19,6 +19,9 @@
   <li>Draft #1 published: 2022-08-12</li>
   <li>Draft #2 published: 2023-02-09</li>
   <li>Finalized: 2023-02-28</li>
+  <li>Revised to fix errata:
+    <ul>
+      <li>2026-02-16 (Fixed a typo in <a href="#erratum-1">an example</a> of <code>until-procedure</code>.)</li></ul></li>
 </ul>
 
 <h2 id="abstract">Abstract</h2>
@@ -300,13 +303,13 @@ Returns an unspecified value.</p>
 <p><code>(until-procedure</code>&nbsp;<em>thunk</em><code>)</code></p>
 <p>Invokes <em>thunk</em> repeatedly until it returns true.
 Returns an unspecified value.</p>
-<blockquote><pre>
+<blockquote id="erratum-1"><pre>
 (let ((i 10))
   (until-procedure
     (lambda ()
       (set! i (- i 1))
       (display i)
-       (&gt; i 0)))) => unspecified ;prints "9876543210"
+      (&lt; i 1)))) => unspecified ;prints "9876543210"
 </pre></blockquote>
 <h2 id="other-procedures">Other procedures</h2>
 <p><code>(always</code>&nbsp;<em>obj</em> ...<code>)</code></p>

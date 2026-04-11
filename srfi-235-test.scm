@@ -86,16 +86,19 @@
  "conjoin"
 
  (test-assert
-     ((conjoin number? exact?)))
+     ((conjoin number? exact?) 1))
 
  (test-assert
-     ((conjoin number? exact?) 1 2))
+     ((conjoin eqv? equal?) 1 1))
 
  (test-assert
-     (not ((conjoin number? exact?) 1 2.)))
+     (not ((conjoin equal? eq?) (list 1) (list 1))))
 
  (test-assert
-     ((conjoin) 1 2)))
+     (not ((conjoin number? exact?) 2.)))
+
+ (test-assert
+     ((conjoin))))
 
 
 
@@ -103,16 +106,19 @@
  "disjoin"
 
  (test-assert
-     ((disjoin number? string?)))
+     ((disjoin number? string?) 1))
 
  (test-assert
-     ((disjoin number? string?) 1 "a"))
+     ((disjoin eqv? equal?) (list 1) (list 1)))
 
  (test-assert
-     (not ((disjoin number? string?) 'a 'b)))
+     ((disjoin number? string?) "a"))
 
  (test-assert
-     (not ((disjoin) 1 2))))
+     (not ((disjoin number? string?) 'a)))
+
+ (test-assert
+     (not ((disjoin)))))
 
 
 

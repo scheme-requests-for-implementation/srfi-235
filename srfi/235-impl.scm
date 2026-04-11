@@ -23,30 +23,12 @@
     (proc obj2)))
 
 (define (conjoin . predicates)
-  (case-lambda
-    (() #t)
-    (args (let loop-args ((args args))
-            (if (null? args)
-                #t
-                (let ((arg (car args)))
-                  (let loop-preds ((predicates predicates))
-                    (cond
-                     ((null? predicates) (loop-args (cdr args)))
-                     ((not ((car predicates) arg)) #f)
-                     (else (loop-preds (cdr predicates)))))))))))
+  (lambda args
+      (every (lambda (proc) (apply proc args)) predicates)))
 
 (define (disjoin . predicates)
-  (case-lambda
-    (() #t)
-    (args (let loop-args ((args args))
-            (if (null? args)
-                #t
-                (let ((arg (car args)))
-                  (let loop-preds ((predicates predicates))
-                    (cond
-                     ((null? predicates) #f)
-                     (((car predicates) arg) (loop-args (cdr args)))
-                     (else (loop-preds (cdr predicates)))))))))))
+  (lambda args
+      (any (lambda (proc) (apply proc args)) predicates)))
 
 (define (each-of . procs)
   (lambda args

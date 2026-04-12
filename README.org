@@ -1,4 +1,6 @@
 
+# SPDX-FileCopyrightText: 2026 Arthur A. Gleckler
+# SPDX-License-Identifier: MIT
 * SRFI 235: Combinators
 
 ** by John Cowan (spec) and Arvydas Silanskas (implementation)
